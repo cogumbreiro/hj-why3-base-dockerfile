@@ -3,7 +3,7 @@ FROM cogumbreiro/why3:latest
 MAINTAINER Tiago Cogumbreiro
 
 ENV ALT_ERGO_VER=0.99.1 \
-    Z3_VER=4.4.0 \ 
+    Z3_VER=4.4.0 \
     E_VER=1.8
 
 ENV USER user
@@ -15,7 +15,6 @@ RUN apt-get update -y && \
       python \
       make \
       g++ \
-      git \
       libgomp1 \
       && \
     cd /tmp && \
@@ -36,12 +35,12 @@ RUN apt-get update -y && \
     curl -L http://alt-ergo.ocamlpro.com/download_manager.php?target=alt-ergo-static-$ALT_ERGO_VER-x86_64 > /usr/local/bin/alt-ergo && \
     chmod a+x /usr/local/bin/alt-ergo && \
     useradd -ms /bin/bash $USER && \
-    git -C / clone https://bitbucket.org/cogumbreiro/hj-why3 && \
+    mkdir /hj-why3 && \
     chown -R $USER:$USER /hj-why3 && \
-    apt-get autoremove -y g++ make python curl git && \
+    apt-get autoremove -y g++ make python curl && \
     apt-get clean
-    
+
+VOLUME /hj-why3
 USER $USER
 RUN why3 config --detect-provers
 WORKDIR /hj-why3
-
